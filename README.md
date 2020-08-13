@@ -8,7 +8,7 @@ This aap is good example for those who are starting react. It covers a lot of to
 
 To get started developing right away:
 
-* install all project dependencies with `npm install`
+* install all project dependencies with `npm install`. (There maybe some warnings. Ignore them.)
 * start the development server with `npm start`
 
 ## Directory Structure
