@@ -10,7 +10,7 @@ This app is part of the projects from [React Nanodegree Program](https://www.uda
 
 To get started:
 
-* install all project dependencies with `npm install`. (There maybe some warnings. Ignore them.)
+* install all project dependencies with `npm install`.
 * start the development server with `npm start`
 
 ## Contact
