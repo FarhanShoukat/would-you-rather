@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
+
 import { handleAnswerQuestion } from '../actions/questions'
 
 const OPTION_ONE = 'optionOne'
@@ -61,7 +62,8 @@ const mapStateToProps = ({ questions, users }, { id }) => {
 
     return {
         question,
-        user: users[question.author]
+        user: users[question.author],
+        dispatch: PropTypes.func.isRequired,
     }
 }
 

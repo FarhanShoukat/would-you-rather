@@ -1,6 +1,8 @@
 import React, { useEffect } from 'react'
 import { connect } from 'react-redux'
+import PropTypes from 'prop-types'
 import { Route } from 'react-router-dom'
+
 import { handleInitialData } from '../actions/shared'
 import Login from './Login'
 import Nav from './Nav'
@@ -12,6 +14,7 @@ import QuestionPage from './QuestionPage'
 
 
 const App = ({ loading, dispatch }) => {
+    // eslint-disable-next-line
     useEffect(() => dispatch(handleInitialData()), [])
 
     return (
@@ -30,6 +33,11 @@ const App = ({ loading, dispatch }) => {
             }
         </div>
     )
+}
+
+App.propTypes = {
+    loading: PropTypes.bool.isRequired,
+    dispatch: PropTypes.func.isRequired,
 }
 
 const mapStateToProps = ({ questions }) => ({

@@ -1,7 +1,9 @@
 import React, { Fragment } from 'react'
 import { NavLink } from 'react-router-dom'
 import { connect } from 'react-redux'
-import {logoutUser} from '../actions/authedUser'
+import PropTypes from 'prop-types'
+
+import { logoutUser } from '../actions/authedUser'
 
 const Nav = ({ user, dispatch }) => {
     const logOutUser = e => {
@@ -49,6 +51,11 @@ const Nav = ({ user, dispatch }) => {
             </ul>
         </nav>
     )
+}
+
+Nav.propTypes = {
+    user: PropTypes.object,
+    dispatch: PropTypes.func.isRequired,
 }
 
 const mapStateToProps = ({ authedUser, users }) => ({

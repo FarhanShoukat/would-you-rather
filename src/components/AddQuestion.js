@@ -1,6 +1,8 @@
 import React, { useState } from 'react'
 import { connect } from 'react-redux'
+import PropTypes from 'prop-types'
 import { withRouter } from 'react-router-dom'
+
 import { handleAddQuestion } from '../actions/questions'
 
 const AddQuestion = ({ dispatch, history }) => {
@@ -47,6 +49,11 @@ const AddQuestion = ({ dispatch, history }) => {
             </div>
         </div>
     )
+}
+
+AddQuestion.propTypes = { 
+    dispatch: PropTypes.func.isRequired,
+    history: PropTypes.object.isRequired,
 }
 
 export default withRouter(connect()(AddQuestion))

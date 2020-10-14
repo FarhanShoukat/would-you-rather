@@ -3,6 +3,7 @@ import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
 import { Redirect, withRouter } from 'react-router-dom'
 import queryString from 'querystring'
+
 import { loginUser } from '../actions/authedUser'
 
 const Login = ({ authedUser, users, dispatch, location }) => {
@@ -40,6 +41,8 @@ const Login = ({ authedUser, users, dispatch, location }) => {
 Login.propTypes = {
     authedUser: PropTypes.string,
     users: PropTypes.array.isRequired,
+    dispatch: PropTypes.func.isRequired,
+    location: PropTypes.object.isRequired,
 }
 
 const mapStateToProps = ({ authedUser, users }) => ({
