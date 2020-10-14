@@ -1,72 +1,59 @@
-import React, { Component } from 'react'
+import React, { useState } from 'react'
 import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
 import { handleAnswerQuestion } from '../actions/questions'
 
-class AnswerQuestion extends Component {
-    static OPTION_ONE = 'optionOne'
-    static OPTION_TWO = 'optionTwo'
+const OPTION_ONE = 'optionOne'
+const OPTION_TWO = 'optionTwo'
 
-    static propTypes = {
-        question: PropTypes.object.isRequired,
-        user: PropTypes.object.isRequired,
-    }
+const AnswerQuestion = ({ question, user, dispatch }) => {
+    const [selectedOption, setSelectedOption] = useState(OPTION_ONE)
 
-    state = {
-        selectedOption: AnswerQuestion.OPTION_ONE
-    }
-
-    handleChange = e => this.setState({selectedOption: e.target.value})
-
-    handleSubmit = e => {
+    const handleSubmit = e => {
         e.preventDefault()
 
-        const { dispatch, question } = this.props
-
-        dispatch(handleAnswerQuestion(question.id, this.state.selectedOption))
+        dispatch(handleAnswerQuestion(question.id, selectedOption))
     }
 
-    render() {
-        const { question, user } = this.props
-        const { selectedOption } = this.state
-
-        return (
-            <div className='tweet center' style={{maxWidth: 400}}>
-                <img
-                    src={user.avatarURL}
-                    alt={user.name}
-                    className='avatar'
-                />
-                <div className='info'>
-                    <span>{user.name} asks:</span>
-                    <h4>Would you rather...</h4>
-                    <form className='login-user' onSubmit={this.handleSubmit}>
-                        <label>
-                            <input
-                                type='radio'
-                                value={AnswerQuestion.OPTION_ONE}
-                                checked={selectedOption === AnswerQuestion.OPTION_ONE}
-                                onChange={this.handleChange}
-                            />
-                            {question.optionOne.text}
-                        </label>
-                        <label>
-                            <input
-                                type='radio'
-                                value={AnswerQuestion.OPTION_TWO}
-                                checked={selectedOption === AnswerQuestion.OPTION_TWO}
-                                onChange={this.handleChange}
-                            />
-                            {question.optionTwo.text}
-                        </label>
-                        <button className='btn'>
-                            Submit
-                        </button>
-                    </form>
-                </div>
+    return (
+        <div className='tweet center' style={{maxWidth: 400}}>
+            <img
+                src={user.avatarURL}
+                alt={user.name}
+                className='avatar'
+            />
+            <div className='info'>
+                <span>{user.name} asks:</span>
+                <h4>Would you rather...</h4>
+                <form className='login-user' onSubmit={handleSubmit}>
+                    <label>
+                        <input
+                            type='radio'
+                            checked={selectedOption === OPTION_ONE}
+                            onChange={() => setSelectedOption(OPTION_ONE)}
+                        />
+                        {question.optionOne.text}
+                    </label>
+                    <label>
+                        <input
+                            type='radio'
+                            checked={selectedOption === OPTION_TWO}
+                            onChange={() => setSelectedOption(OPTION_TWO)}
+                        />
+                        {question.optionTwo.text}
+                    </label>
+                    <button className='btn'>
+                        Submit
+                    </button>
+                </form>
             </div>
-        )
-    }
+        </div>
+    )
+}
+
+AnswerQuestion.propTypes = {
+    question: PropTypes.object.isRequired,
+    user: PropTypes.object.isRequired,
 }
 
 const mapStateToProps = ({ questions, users }, { id }) => {

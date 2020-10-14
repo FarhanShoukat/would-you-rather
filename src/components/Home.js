@@ -1,64 +1,53 @@
-import React, { Component } from 'react'
+import React, { useState } from 'react'
 import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
 import Question from './Question'
 
-class Home extends Component {
-    static UNANSWERED_TAB = 'UNANSWERED_TAB'
-    static ANSWERED_TAB = 'ANSWERED_TAB'
+const UNANSWERED_TAB = 'UNANSWERED_TAB'
+const ANSWERED_TAB = 'ANSWERED_TAB'
 
-    static propTypes = {
-        user: PropTypes.object.isRequired,
-        questions: PropTypes.array.isRequired
-    }
+const Home = ({ user, questions }) => {
+    const [selectedTab , setSelectedTab] = useState(UNANSWERED_TAB)
 
-    state = {
-        selectedTab: Home.UNANSWERED_TAB
-    }
+    const answeredQuestionIds = Object.keys(user.answers)
 
-    updateSelectedTab = (tab) => this.setState({
-        selectedTab: tab
+    const filteredQuestions = questions.filter(({ id }) => {
+        const isAnswered = answeredQuestionIds.includes(id)
+        return selectedTab === ANSWERED_TAB ? isAnswered : !isAnswered
     })
+        .sort((q1, q2) => q2.timestamp - q1.timestamp)
 
-    render() {
-        const { selectedTab } = this.state
-        const { user, questions } = this.props
-
-        const answeredQuestionIds = Object.keys(user.answers)
-
-        const filteredQuestions = questions.filter(({ id }) => {
-            const isAnswered = answeredQuestionIds.includes(id)
-            return selectedTab === Home.ANSWERED_TAB ? isAnswered : !isAnswered
-        })
-            .sort((q1, q2) => q2.timestamp - q1.timestamp)
-
-        return (
-            <div className='center'>
-                <div>
-                    <button
-                        disabled={selectedTab === Home.UNANSWERED_TAB}
-                        onClick={() => this.updateSelectedTab(Home.UNANSWERED_TAB)}>
-                        Unanswered Questions
-                    </button>
-                    <button
-                        disabled={selectedTab === Home.ANSWERED_TAB}
-                        onClick={() => this.updateSelectedTab(Home.ANSWERED_TAB)}>
-                        Answered Question
-                    </button>
-                </div>
-
-                <div>
-                    <ul className='dashboard-list'>
-                        {filteredQuestions.map(({ id }) => (
-                            <li key={id}>
-                                <Question id={id} />
-                            </li>
-                        ))}
-                    </ul>
-                </div>
+    return (
+        <div className='center'>
+            <div>
+                <button
+                    disabled={selectedTab === UNANSWERED_TAB}
+                    onClick={() => setSelectedTab(UNANSWERED_TAB)}>
+                    Unanswered Questions
+                </button>
+                <button
+                    disabled={selectedTab === ANSWERED_TAB}
+                    onClick={() => setSelectedTab(ANSWERED_TAB)}>
+                    Answered Question
+                </button>
             </div>
-        )
-    }
+
+            <div>
+                <ul className='dashboard-list'>
+                    {filteredQuestions.map(({ id }) => (
+                        <li key={id}>
+                            <Question id={id} />
+                        </li>
+                    ))}
+                </ul>
+            </div>
+        </div>
+    )
+}
+
+Home.propTypes = {
+    user: PropTypes.object.isRequired,
+    questions: PropTypes.array.isRequired
 }
 
 const mapStateToProps = ({ authedUser, users, questions }) => ({

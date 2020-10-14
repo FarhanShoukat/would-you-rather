@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { useEffect } from 'react'
 import { connect } from 'react-redux'
 import { Route } from 'react-router-dom'
 import { handleInitialData } from '../actions/shared'
@@ -11,29 +11,25 @@ import Leaderboard from './Leaderboard'
 import QuestionPage from './QuestionPage'
 
 
-class App extends Component {
-    componentDidMount() {
-        this.props.dispatch(handleInitialData())
-    }
+const App = ({ loading, dispatch }) => {
+    useEffect(() => dispatch(handleInitialData()), [])
 
-    render() {
-        return (
-            <div className='container'>
-                <Nav />
-                {this.props.loading
-                    ? null
-                    :
-                    <div>
-                        <Route path='/login' component={Login} />
-                        <PrivateRoute path='/' exact component={Home} />
-                        <PrivateRoute path='/add' component={AddQuestion} />
-                        <Route path='/leaderboard' component={Leaderboard} />
-                        <PrivateRoute path='/question/:id' component={QuestionPage} />
-                    </div>
-                }
-            </div>
-        )
-    }
+    return (
+        <div className='container'>
+            <Nav />
+            {loading
+                ? null
+                :
+                <div>
+                    <Route path='/login' component={Login} />
+                    <PrivateRoute path='/' exact component={Home} />
+                    <PrivateRoute path='/add' component={AddQuestion} />
+                    <Route path='/leaderboard' component={Leaderboard} />
+                    <PrivateRoute path='/question/:id' component={QuestionPage} />
+                </div>
+            }
+        </div>
+    )
 }
 
 const mapStateToProps = ({ questions }) => ({
